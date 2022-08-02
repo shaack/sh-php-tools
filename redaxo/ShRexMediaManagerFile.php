@@ -1,32 +1,37 @@
 <?php
+
 /**
  * Author: Stefan Haack (https://shaack.com)
  * License: MIT
  */
 class ShRexMediaManagerFile {
 
-    private string $type;
-    private string $media;
     private string $fileName;
+    private rex_media $media;
 
-    public function __construct(string $fileName = null, string $type = "file")
+    public function __construct(string $fileName = null)
     {
         if (!$fileName) {
-            $this->fileName = rex_global_settings::getValue("placeholderImage", 1);
+            $this->fileName = rex_global_settings::getValue("placeholderImage");
+        } else {
+            $this->fileName = $fileName;
         }
         $this->media = rex_media::get($this->fileName);
-        $this->type = $type;
     }
 
-    function getMedia() {
+    function getMedia() : rex_media {
         return $this->media;
     }
 
-    function getImageSrc() {
-        return  "/index.php?rex_media_type={$this->type}&rex_media_file={$this->fileName}";
+    function getTitle() : string {
+        return $this->media->getTitle();
     }
 
-    function getFileUrl() {
+    function getImageSrc($type = "default") : string {
+        return  "/index.php?rex_media_type={$type}&rex_media_file={$this->fileName}";
+    }
+
+    function getFileUrl() : string {
         return  "/media/{$this->fileName}";
     }
 }
