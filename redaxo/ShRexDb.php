@@ -19,7 +19,8 @@ class ShRexDb
     public static function queryUnique(String $stmt, array $params = [])
     {
         self::db()->setQuery($stmt, $params);
-        return self::db()->getArray()[0];
+        $result = self::db()->getArray();
+        return !empty($result) ? self::db()->getArray()[0] : null;
     }
 
     public static function queryList(String $stmt, array $params = [])
