@@ -16,7 +16,12 @@ class ShRexMediaManagerFile {
         } else {
             $this->fileName = $fileName;
         }
-        $this->media = rex_media::get($this->fileName);
+        $media = rex_media::get($this->fileName);
+        if(!$media) {
+            $this->fileName = rex_global_settings::getValue("placeholderImage");
+            $media = rex_media::get($this->fileName);
+        }
+        $this->media = $media;
     }
 
     function getMedia() : rex_media {
