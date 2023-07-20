@@ -6,25 +6,25 @@
 
 class ShTools
 {
-    public static $currentLocale;
+    public static string $currentLocale;
 
-    public static function dateTimeToSqlDate(DateTime $dateTime)
+    public static function dateTimeToSqlDate(DateTime $dateTime): string
     {
         return date_format($dateTime, 'Y-m-d H:i:s');
     }
 
-    public static function dateTimeToSchemaOrgDateTime(DateTime $dateTime)
+    public static function dateTimeToSchemaOrgDateTime(DateTime $dateTime): string
     {
         return date_format($dateTime, 'Y-m-d\TH:i');
     }
 
-    public static function p2nl(String $text)
+    public static function p2nl(String $text): string
     {
         $text = str_replace("</p>", "\n", str_replace("<p>", "", $text));
         return preg_replace("/(^[\r\n]*|[\r\n]+)[\s\t]*[\r\n]+/", "\n", $text);
     }
 
-    public static function removeNewlines(String $text)
+    public static function removeNewlines(String $text): string
     {
         return preg_replace("/(\n\s*)/", "", $text);
     }
@@ -43,7 +43,13 @@ class ShTools
         setlocale($category, self::$currentLocale);
     }
 
-    public static function lang2locale($lang)
+    public static function stringToHtmlId($string): string
+    {
+        $string = preg_replace("/[^a-zA-Z0-9]+/", "_", $string);
+        return strtolower($string);
+    }
+
+    public static function lang2locale($lang): string
     {
         if ($lang == "de") {
             return "de_DE";
@@ -54,7 +60,7 @@ class ShTools
         }
     }
 
-    public static function Csv2Table($csv)
+    public static function Csv2Table($csv): string
     {
         $trs = "";
         $rows = explode("\n", $csv);
