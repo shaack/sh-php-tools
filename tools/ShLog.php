@@ -1,7 +1,7 @@
 <?php
 /**
  * Author and copyright: Stefan Haack (https://shaack.com)
- * License: UNLICENSED
+ * License: MIT
  */
 
 class ShLog
