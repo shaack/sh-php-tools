@@ -18,13 +18,13 @@ class ShTools
         return date_format($dateTime, 'Y-m-d\TH:i');
     }
 
-    public static function p2nl(String $text): string
+    public static function p2nl(string $text): string
     {
         $text = str_replace("</p>", "\n", str_replace("<p>", "", $text));
         return preg_replace("/(^[\r\n]*|[\r\n]+)[\s\t]*[\r\n]+/", "\n", $text);
     }
 
-    public static function removeNewlines(String $text): string
+    public static function removeNewlines(string $text): string
     {
         return preg_replace("/(\n\s*)/", "", $text);
     }
@@ -32,7 +32,7 @@ class ShTools
     public static function setLocale($localeOrLang, $category = LC_ALL)
     {
         $locale = self::lang2locale($localeOrLang);
-        if($locale === "de_DE") {
+        if ($locale === "de_DE") {
             $locale = "de_DE.UTF-8";
         }
         setlocale($category, $locale);
@@ -74,6 +74,16 @@ class ShTools
             $trs .= "<tr>$tds</tr>";
         }
         return "<table>$trs</table>";
+    }
+
+    public static function createId($length = 8): string
+    {
+        $key = "";
+        $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        for ($i = 0; $i < $length; $i++) {
+            $key .= $chars[rand(0, strlen($chars) - 1)];
+        }
+        return $key;
     }
 }
 

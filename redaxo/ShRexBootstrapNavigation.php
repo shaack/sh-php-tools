@@ -6,53 +6,77 @@
 
 class ShRexBootstrapNavigation
 {
-    public static function renderChildsInline($categoryId = null)
+    private array $firstLevelCategories;
+    private rex_category|null $currentCategory;
+    private int $maxDepth;
+
+    public function __construct(rex_category $firstLevelCategories = null, $maxDepth = 3)
     {
-        if (!$categoryId) {
-            $items = rex_category::getRootCategories(true);
+        if ($firstLevelCategories) {
+            $this->firstLevelCategories = $firstLevelCategories->getChildren(true);
         } else {
-            $items = rex_category::get($categoryId)->getChildren(true);
+            $this->firstLevelCategories = rex_category::getRootCategories(true);
         }
-        $itemsHtml = "";
-        $lang = rex_clang::getCurrentId();
-        $itemsHtml .= "<li class='list-inline-item'><span role='button' class='link-primary' onclick='window.cookieConsent.showDialog()'>" . ($lang == 1 ? "Cookie-Einstellungen" : "Cookie settings") . "</span></li>";
-        foreach ($items as $item) {
-            $itemsHtml .= "<li class='list-inline-item'><a href='{$item->getUrl()}'>{$item->getName()}</a></li>";
-        }
-        return "<ul class='list-inline'>$itemsHtml</ul>";
+        $this->maxDepth = $maxDepth;
+        $this->currentCategory = rex_category::getCurrent();
     }
 
-    public static function renderExtras($categoryId)
+    /**
+     * @param rex_category[] $categories
+     * @return string
+     */
+    public function render(array $categories = null): string
     {
-        $categories = rex_category::get($categoryId)->getChildren(true);
+        if (!$categories) {
+            $categories = $this->firstLevelCategories;
+        }
         $html = "";
         foreach ($categories as $category) {
-            $html .= "<li class='nav-item'><a class='nav-link' href='" . $category->getUrl() . "'>" . $category->getName() . "</a></li>";
+            if (count($category->getChildren(true))) {
+                $html .= $this->renderLiDropdown($category);
+            } else {
+                $html .= $this->renderLiLink($category);
+            }
         }
         return $html;
     }
 
-    public static function renderCols($categoryId = null)
+    private function hasParentOrIsSame(rex_category|null $childCategory, rex_category $parentCategory)
     {
-        if (!$categoryId) {
-            $categories = rex_category::getRootCategories(true);
-        } else {
-            $categories = rex_category::get($categoryId)->getChildren(true);
+        if(!$childCategory) {
+            return false;
         }
+        $parentOfChild = $childCategory->getParent();
+        if ($childCategory->getId() == $parentCategory->getId()) {
+            return true;
+        } else if ($parentOfChild) {
+            return $this->hasParentOrIsSame($parentOfChild, $parentCategory);
+        }
+    }
 
-        $colsHtml = "";
-        foreach ($categories as $category) {
-            if($category->getValue("cat_hide_in_footer") == "|true|") {
-                continue;
-            }
-            $items = $category->getChildren(true);
-            $itemsHtml = "";
-            // $itemsHtml .= "<li><a href='{$category->getUrl()}'>{$category->getName()}</a></li>";
-            foreach ($items as $item) {
-                $itemsHtml .= "<li><a class='text-decoration-none' href='{$item->getUrl()}'>{$item->getName()}</a></li>";
-            }
-            $colsHtml .= "<div class='col-auto' style='min-width: 180px'><h4><a href='{$category->getUrl()}' class='text-decoration-none'>{$category->getName()}</a></h4><ul class='list-unstyled'>$itemsHtml</ul></div>";
+    private function renderLiLink($category) : string {
+        $isActive = false;
+        if ($this->hasParentOrIsSame($this->currentCategory, $category)) {
+            $isActive = true;
         }
-        return "<div class='row'>" . $colsHtml . "</div>";
+        return '<li><a class="' . ($isActive ? "active" : "") . '" href="' . $category->getUrl() . '">' . $category->getName() . '</a></li>';
+    }
+
+    private function renderLiDropdown(rex_category $category, string $chevron = "down"): string
+    {
+        $isActive = false;
+        if ($this->hasParentOrIsSame($this->currentCategory, $category)) {
+            $isActive = true;
+        }
+        $html = '<li class="dropdown"><a class="' . ($isActive ? "active" : "") . '" href="' . $category->getUrl() . '"><span>' . $category->getName() .
+            '</span> <i class="bi bi-chevron-' . $chevron . '"></i></a><ul>';
+        foreach ($category->getChildren(true) as $child) {
+            if(count($child->getChildren(true)) && $this->maxDepth > 2) {
+                $html .= $this->renderLiDropdown($child, "right");
+            } else {
+                $html .= $this->renderLiLink($child);
+            }
+        }
+        return $html . "</ul></li>";
     }
 }
