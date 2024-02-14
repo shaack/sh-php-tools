@@ -6,7 +6,7 @@
 
 class ShBootstrapControls
 {
-    public static function radio($name, $label, $value, $required = true)
+    public static function radio($name, $label, $value, $required = true): string
     {
         $id = ShTools::createId(8);
         $attrRequired = $required ? "required" : "";
@@ -19,7 +19,7 @@ class ShBootstrapControls
             </div>";
     }
 
-    public static function checkbox($name, $label, $value, $required = false)
+    public static function checkbox($name, $label, $value, $required = false): string
     {
         $attrRequired = $required ? "required" : "";
         return "
@@ -31,7 +31,7 @@ class ShBootstrapControls
         </div>";
     }
 
-    public static function input($name, $label, $value, $placeholder = "", $type = "text", $size = "", $required = true)
+    public static function input($name, $label, $value, $placeholder = "", $type = "text", $size = "", $required = true): string
     {
         $attrRequired = $required ? "required" : "";
         $input = "<input size='$size' type='$type' $attrRequired class='form-control' id='$name' name='$name' placeholder='$placeholder' value='$value'>";
@@ -48,7 +48,7 @@ class ShBootstrapControls
         }
     }
 
-    public static function select($name, $label, $options, $value, $required = true)
+    public static function select($name, $label, $options, $value, $required = true): string
     {
         $attrRequired = $required ? "required" : "";
         $optionsHtml = "";
