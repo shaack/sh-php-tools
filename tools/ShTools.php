@@ -86,5 +86,6 @@ class ShTools
         return $key;
     }
 }
-
+// https://stackoverflow.com/questions/65502589/php-where-does-setlocales-value-come-from
+// store the current locale (before changing it, so we can reset it later)
 ShTools::$currentLocale = setlocale(LC_ALL, 0);
