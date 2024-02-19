@@ -16,7 +16,7 @@ class ShRexBreadcrumb
         $this->article = $article;
     }
 
-    public function render()
+    public function render(): string
     {
         $pathArray = $this->article->getPathAsArray();
         $breadcrumbHtml = "";
@@ -29,6 +29,10 @@ class ShRexBreadcrumb
                 $breadcrumbHtml .= "<li class='breadcrumb-item'><span>{$pathArticle->getName()}</span></li>";
             }
             $i++;
+        }
+        // if article is different from the category, add the article to the breadcrumb
+        if ($this->article->getId() != $this->article->getCategoryId()) {
+            $breadcrumbHtml .= "<li class='breadcrumb-item'><a href='{$pathArticle->getUrl()}'>{$this->article->getName()}</a></li>";
         }
         return "<nav class='nav-breadcrumb' aria-label='breadcrumb'><ol class='breadcrumb'>$breadcrumbHtml</ol></nav>";
     }
