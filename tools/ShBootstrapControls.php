@@ -31,16 +31,15 @@ class ShBootstrapControls
         </div>";
     }
 
-    /**  @deprecated */
-    public static function input($name, $label, $value, $placeholder = "", $type = "text", $size = "", $required = true, $col = 4): string
+    public static function input($name, $label, $value, $placeholder = "", $type = "text", $size = "", $required = true, $labelCols = 4): string
     {
         $attrRequired = $required ? "required" : "";
         $input = "<input size='$size' type='$type' $attrRequired class='form-control' id='$name' name='$name' placeholder='$placeholder' value='$value'>";
         if ($label !== null) {
-            $col12 = 12 - $col;
+            $col12 = 12 - $labelCols;
             return "
             <div class='row gx-2'>
-                <label class='col-4 col-md-$col col-form-label' for='$name'>$label</label>
+                <label class='col-4 col-md-$labelCols col-form-label' for='$name'>$label</label>
                 <div class='col-8 col-md-$col12'>
                     $input
                 </div>
