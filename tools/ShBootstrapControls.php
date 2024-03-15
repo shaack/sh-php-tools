@@ -19,7 +19,7 @@ class ShBootstrapControls
             </div>";
     }
 
-    public static function checkbox($name, $label, $value, $required = false): string
+    public static function checkbox($name, $label, $value, $required = true): string
     {
         $attrRequired = $required ? "required" : "";
         return "
@@ -31,15 +31,17 @@ class ShBootstrapControls
         </div>";
     }
 
-    public static function input($name, $label, $value, $placeholder = "", $type = "text", $size = "", $required = true): string
+    /**  @deprecated */
+    public static function input($name, $label, $value, $placeholder = "", $type = "text", $size = "", $required = true, $col = 4): string
     {
         $attrRequired = $required ? "required" : "";
         $input = "<input size='$size' type='$type' $attrRequired class='form-control' id='$name' name='$name' placeholder='$placeholder' value='$value'>";
         if ($label !== null) {
+            $col12 = 12 - $col;
             return "
             <div class='row gx-2'>
-                <label class='col-auto col-form-label' for='$name'>$label</label>
-                <div class='col-auto'>
+                <label class='col-4 col-md-$col col-form-label' for='$name'>$label</label>
+                <div class='col-8 col-md-$col12'>
                     $input
                 </div>
             </div>";
