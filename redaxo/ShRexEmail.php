@@ -11,6 +11,8 @@ class ShRexEmail
      */
     public static function send($subject, $body, $to = null, $from = null, $fromName = null): void
     {
+        /* konfigurieren in config.yml */
+
         if (!$to) {
             $to = rex::getProperty('contact_email_to');
         }

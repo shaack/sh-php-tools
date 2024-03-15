@@ -54,7 +54,7 @@ class ShBootstrapControls
         $attrRequired = $required ? "required" : "";
         $optionsHtml = "";
         foreach ($options as $optionValue => $optionLabel) {
-            $optionsHtml .= "<option value='$optionValue'>$optionLabel</option>";
+            $optionsHtml .= "<option value='$optionLabel'>$optionLabel</option>";
         }
         $html = "";
         if ($label !== null) {
