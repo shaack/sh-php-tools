@@ -9,10 +9,13 @@ class ShRexMediaManagerFile {
     private string $fileName;
     private rex_media $media;
 
+    private bool $isPlaceholder = false;
+
     public function __construct(string $fileName = null)
     {
         if (!$fileName) {
             $this->fileName = rex_global_settings::getValue("placeholderImage");
+            $this->isPlaceholder = true;
         } else {
             $this->fileName = $fileName;
         }
@@ -20,6 +23,7 @@ class ShRexMediaManagerFile {
         if(!$media) {
             $this->fileName = rex_global_settings::getValue("placeholderImage");
             $media = rex_media::get($this->fileName);
+            $this->isPlaceholder = true;
         }
         $this->media = $media;
     }
@@ -39,4 +43,9 @@ class ShRexMediaManagerFile {
     function getFileUrl() : string {
         return  "/media/{$this->fileName}";
     }
+
+    function isPlaceholder() : bool {
+        return $this->isPlaceholder;
+    }
+
 }
