@@ -85,7 +85,17 @@ class ShTools
         }
         return $key;
     }
+
+    public static function getCurrentUri($includeQueryString = false)
+    {
+        $uri = $_SERVER['REQUEST_URI'];
+        if (!$includeQueryString) {
+            $uri = strtok($uri, '?');
+        }
+        return $uri;
+    }
 }
+
 // https://stackoverflow.com/questions/65502589/php-where-does-setlocales-value-come-from
 // store the current locale (before changing it, so we can reset it later)
 ShTools::$currentLocale = setlocale(LC_ALL, 0);
