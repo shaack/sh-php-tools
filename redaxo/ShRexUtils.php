@@ -31,9 +31,13 @@ class ShRexUtils
         return $zeitpunkt;
     }
 
-    static function csvToArray($csv): array
+    static function csvToArray($csv, $trim = false): array
     {
-        return explode(",", $csv);
+        $exploded = explode(",", $csv);
+        if($trim) {
+            $exploded = array_map('trim', $exploded);
+        }
+        return $exploded;
     }
 
     static function csvToArticles($csv): array
