@@ -26,7 +26,7 @@ class ShRexBreadcrumb
             if ($i != 1) {
                 $breadcrumbHtml .= "<li class='breadcrumb-item'><a href='{$pathArticle->getUrl()}'>{$pathArticle->getName()}</a></li>";
             } else {
-                $breadcrumbHtml .= "<li class='breadcrumb-item'><span>{$pathArticle->getName()}</span></li>";
+                $breadcrumbHtml .= "<li class='breadcrumb-item'><span>{$pathArticle->getCategory()->getName()}</span></li>";
             }
             $i++;
         }
