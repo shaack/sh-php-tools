@@ -44,6 +44,10 @@ class ShRexMediaManagerFile {
         return  "/media/{$this->fileName}";
     }
 
+    function getFileName() : string {
+        return $this->fileName;
+    }
+
     function isPlaceholder() : bool {
         return $this->isPlaceholder;
     }
