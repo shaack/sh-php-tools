@@ -34,7 +34,7 @@ class ShRexUtils
     static function csvToArray($csv, $trim = false): array
     {
         $exploded = explode(",", $csv);
-        if($trim) {
+        if ($trim) {
             $exploded = array_map('trim', $exploded);
         }
         return $exploded;

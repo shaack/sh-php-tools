@@ -57,4 +57,14 @@ class ShRexMediaManagerFile {
         return $this->media->getValue($string);
     }
 
+    public function getFormattedSize()
+    {
+        $size = $this->media->getSize();
+        if($size > 1024 * 1024) {
+            return number_format($size / 1024 / 1024, 2, ",", ".") . " MB";
+        } else {
+            return number_format($size / 1024, 2, ",", ".") . " KB";
+        }
+    }
+
 }
