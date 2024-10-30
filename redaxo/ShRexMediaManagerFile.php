@@ -48,4 +48,9 @@ class ShRexMediaManagerFile {
         return $this->isPlaceholder;
     }
 
+    public function getMetaInfo(string $string): int|string|null
+    {
+        return $this->media->getValue($string);
+    }
+
 }
