@@ -24,6 +24,11 @@ class ShTools
         return preg_replace("/(^[\r\n]*|[\r\n]+)[\s\t]*[\r\n]+/", "\n", $text);
     }
 
+    public static function nl2p(string $text): string
+    {
+        return "<p>" . preg_replace("/\n/", "</p>\n<p>", $text) . "</p>";
+    }
+
     public static function removeNewlines(string $text): string
     {
         return preg_replace("/(\n\s*)/", "", $text);
